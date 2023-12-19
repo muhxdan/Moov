@@ -7,10 +7,10 @@ data class MoovResponse(
     val page: Int,
 
     @field:SerializedName("results")
-    val results: List<MovieItem>
+    val results: List<MoovItem>
 )
 
-data class MovieItem(
+data class MoovItem(
     @field:SerializedName("id")
     val id: Int,
 
