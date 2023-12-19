@@ -13,6 +13,7 @@ data class MoovEntity(
     var originalLanguage: String,
     var releaseDate: String? = null,
     var voteAverage: Double? = null,
+    var moovType: String? = null,
     var title: String,
     var isFavorite: Boolean = false
 )

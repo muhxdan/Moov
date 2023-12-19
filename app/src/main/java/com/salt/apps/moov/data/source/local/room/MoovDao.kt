@@ -10,17 +10,17 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MoovDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllMovies(movies: List<MoovEntity>)
+    suspend fun insertAllMoov(moovs: List<MoovEntity>)
 
-    @Query("SELECT * FROM moov_entity ")
-    fun getAllMovies(): Flow<List<MoovEntity>>
+    @Query("SELECT * FROM moov_entity WHERE moovType = :moovType")
+    fun getAllMoov(moovType: String): Flow<List<MoovEntity>>
 
-    @Query("SELECT * FROM moov_entity WHERE id=:imageId ORDER BY id")
-    fun getMovieById(imageId: Int): Flow<MoovEntity>
-
-    @Query("UPDATE moov_entity SET isFavorite = :isFavorite WHERE id = :movieId")
-    suspend fun updateMovie(movieId: Int, isFavorite: Boolean)
-
-    @Query("SELECT * FROM moov_entity WHERE isFavorite = 1")
-    fun getFavoriteMovies(): Flow<List<MoovEntity>>
+//    @Query("SELECT * FROM moov_entity WHERE id=:moovId ORDER BY id")
+//    fun getMoovById(moovId: Int): Flow<MoovEntity>
+//
+//    @Query("UPDATE moov_entity SET isFavorite = :isFavorite WHERE id = :moovId")
+//    suspend fun updateMoovById(moovId: Int, isFavorite: Boolean)
+//
+//    @Query("SELECT * FROM moov_entity WHERE isFavorite = 1")
+//    fun getFavoriteMoov(): Flow<List<MoovEntity>>
 }
