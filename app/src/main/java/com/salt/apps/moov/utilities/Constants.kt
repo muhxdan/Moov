@@ -13,6 +13,10 @@ object Constants {
         return BEARER + API_KEY
     }
 
+    fun getImageUrl(path: String): String {
+        return BASE_URL_IMAGE + path
+    }
+
     // Database
     const val DB_NAME = "Moov.db"
     const val DB_VERSION = 1
