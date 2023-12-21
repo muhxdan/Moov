@@ -6,10 +6,13 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,15 +24,15 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import com.salt.apps.moov.data.Resource
 import com.salt.apps.moov.utilities.Constants.getImageUrl
 import kotlinx.coroutines.NonCancellable
@@ -42,34 +45,20 @@ fun HomeScreen(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-//    val popularMoviesState by homeViewModel.popularMovies.collectAsState(null)
     val popularMoviesState by homeViewModel.popularMoviesState.collectAsState()
-    // Handle UI based on the popularMoviesState
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(MaterialTheme.colorScheme.background),
-//        contentAlignment = Alignment.Center
-//    ) {
+
     when (popularMoviesState) {
         is Resource.Loading -> {
             Log.i("HomeScreen", "Loading...")
-            CircularProgressIndicator(
-                strokeWidth = 5.dp,
-                color = MaterialTheme.colorScheme.primary
-            )
         }
 
         is Resource.Success -> {
             val movies = (popularMoviesState as Resource.Success).data
-            Log.i("HomeScreen", movies.toString())
-            CarouselCard(movies.map { it.posterPath ?: "" })
-
+            CarouselCard(movies.map { it.backdropPath ?: "" })
         }
 
         is Resource.Error -> {
             val errorMessage = (popularMoviesState as Resource.Error).message
-            Log.e("HomeScreen", errorMessage.toString())
         }
     }
 }
@@ -82,7 +71,7 @@ fun CarouselCard(
     val pageCount = Int.MAX_VALUE
     val pagerState = rememberPagerState(
         pageCount = { pageCount },
-        initialPage = pageCount / 2
+        initialPage = pageCount / 2,
     )
 
     Column(
@@ -98,7 +87,7 @@ fun CarouselCard(
                     if (pagerState.currentPage == page) 1f else .85f,
                     label = "",
                     animationSpec = tween(
-                        durationMillis = 200,
+                        durationMillis = 250,
                     )
                 )
 
@@ -112,23 +101,35 @@ fun CarouselCard(
                             scaleY = sizeScale
                         ),
                 ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(getImageUrl(imageUrl))
-                            .crossfade(true)
-                            .build(),
-                        contentScale = ContentScale.Crop,
+                    SubcomposeAsyncImage(
+                        model = getImageUrl(imageUrl),
                         contentDescription = null,
-                    )
+                    ) {
+                        val state = painter.state
+                        if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .wrapContentSize(Alignment.Center)
+                            ) {
+                                CircularProgressIndicator(
+                                    strokeWidth = 3.dp,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        } else {
+                            SubcomposeAsyncImageContent()
+                        }
+                    }
                 }
             }
         }
     }
-
     LaunchedEffect(key1 = pagerState.currentPage) {
         launch {
             while (true) {
-                delay(5000)
+                delay(3000)
                 withContext(NonCancellable) {
                     if (pagerState.currentPage + 1 in 0..Int.MAX_VALUE) {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
