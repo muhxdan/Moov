@@ -17,14 +17,26 @@ class HomeViewModel @Inject constructor(private val moovRepository: MoovReposito
     private val _popularMoviesState = MutableStateFlow<Resource<List<Moov>>>(Resource.Loading())
     val popularMoviesState: StateFlow<Resource<List<Moov>>> = _popularMoviesState
 
+    private val _upcomingMoviesState = MutableStateFlow<Resource<List<Moov>>>(Resource.Loading())
+    val upcomingMoviesState: StateFlow<Resource<List<Moov>>> = _upcomingMoviesState
+
     init {
         fetchPopularMovies()
+        fetchUpcomingMovies()
     }
 
     private fun fetchPopularMovies() {
         viewModelScope.launch {
             moovRepository.getPopularMoovs().collect { result ->
                 _popularMoviesState.value = result
+            }
+        }
+    }
+
+    private fun fetchUpcomingMovies() {
+        viewModelScope.launch {
+            moovRepository.getUpcomingMoovs().collect { result ->
+                _upcomingMoviesState.value = result
             }
         }
     }
