@@ -32,4 +32,22 @@ class MoovRepository @Inject constructor(
             it.isNullOrEmpty()
         }
     )
+
+    fun getUpcomingMoovs(): Flow<Resource<List<Moov>>> = moovNetworkBoundResource(
+        query = {
+            local.getMoovs(MoovType.UPCOMING.name).map {
+                DataMapper.mapMoovEntitiesToMoovModel(it)
+            }
+        },
+        fetch = {
+            remote.getUpComingMovies()
+        },
+        saveFetchResult = {
+            val entity = DataMapper.mapMoovResponseToEntity(it, MoovType.UPCOMING)
+            local.insertMoovs(entity)
+        },
+        shouldFetch = {
+            it.isNullOrEmpty()
+        }
+    )
 }
