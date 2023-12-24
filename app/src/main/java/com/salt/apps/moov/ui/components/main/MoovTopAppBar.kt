@@ -1,4 +1,4 @@
-package com.salt.apps.moov.ui.components
+package com.salt.apps.moov.ui.components.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -25,7 +25,12 @@ fun MoovTopAppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(currentScreen.route) },
+        title = {
+            Text(
+                currentScreen.route,
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
