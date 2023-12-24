@@ -8,6 +8,7 @@ import com.salt.apps.moov.data.repository.MoovRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class HomeViewModel @Inject constructor(private val moovRepository: MoovReposito
 
     private fun fetchPopularMovies() {
         viewModelScope.launch {
-            moovRepository.getPopularMoovs().collect { result ->
+            moovRepository.getPopularMoovs().collectLatest { result ->
                 _popularMoviesState.value = result
             }
         }
@@ -35,7 +36,7 @@ class HomeViewModel @Inject constructor(private val moovRepository: MoovReposito
 
     private fun fetchUpcomingMovies() {
         viewModelScope.launch {
-            moovRepository.getUpcomingMoovs().collect { result ->
+            moovRepository.getUpcomingMoovs().collectLatest { result ->
                 _upcomingMoviesState.value = result
             }
         }
