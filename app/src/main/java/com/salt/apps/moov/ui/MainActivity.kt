@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.salt.apps.moov.ui.components.MoovApp
+import com.salt.apps.moov.ui.components.main.MoovApp
 import com.salt.apps.moov.ui.theme.MoovTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
