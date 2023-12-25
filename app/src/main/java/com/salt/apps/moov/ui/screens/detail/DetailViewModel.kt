@@ -3,8 +3,8 @@ package com.salt.apps.moov.ui.screens.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.salt.apps.moov.data.Resource
-import com.salt.apps.moov.data.model.Moov
-import com.salt.apps.moov.data.repository.MoovRepository
+import com.salt.apps.moov.data.model.Movie
+import com.salt.apps.moov.data.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,23 +12,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val moovRepository: MoovRepository) :
+class DetailViewModel @Inject constructor(private val movieRepository: MovieRepository) :
     ViewModel() {
 
-    private val _moovDetail = MutableStateFlow<Resource<Moov>>(Resource.Loading())
-    val moovDetail: StateFlow<Resource<Moov>> get() = _moovDetail
+    private val _detailMovie = MutableStateFlow<Resource<Movie>>(Resource.Loading())
+    val detailMovie: StateFlow<Resource<Movie>> get() = _detailMovie
 
-    fun fetchFavoriteMovies(moovId: Int) {
-        viewModelScope.launch {
-            moovRepository.getMoovById(moovId).collect {
-                _moovDetail.value = it
-            }
+    fun getFavoriteMovies(movieId: Int) = viewModelScope.launch {
+        movieRepository.getMovieById(movieId).collect {
+            _detailMovie.value = it
         }
     }
 
-    fun toggleFavorite(movieId: Int, isFavorite: Boolean) {
-        viewModelScope.launch {
-            moovRepository.updateFavoriteMovie(movieId, isFavorite)
-        }
+    fun toggleFavorite(movieId: Int, isFavorite: Boolean) = viewModelScope.launch {
+        movieRepository.updateMovieById(movieId, isFavorite)
     }
 }

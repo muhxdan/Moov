@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.salt.apps.moov.data.Resource
-import com.salt.apps.moov.data.model.Moov
-import com.salt.apps.moov.ui.components.popular.PopularListItem
+import com.salt.apps.moov.data.model.Movie
+import com.salt.apps.moov.ui.components.MovieListItem
 import com.salt.apps.moov.ui.components.upcoming.AnimationScrollItem
 import com.salt.apps.moov.ui.components.upcoming.CarouselMovieItem
 
@@ -73,7 +73,7 @@ fun HomeScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HandleSectionMoviesState(
-    upcomingMoviesState: Resource<List<Moov>>,
+    upcomingMoviesState: Resource<List<Movie>>,
     navController: NavController
 ) {
     val pageCount = Int.MAX_VALUE
@@ -103,7 +103,7 @@ fun HandleSectionMoviesState(
                     )
 
                     CarouselMovieItem(
-                        moov = movies[page % movies.size],
+                        movie = movies[page % movies.size],
                         sizeScale = sizeScale,
                         navController = navController
                     )
@@ -118,7 +118,7 @@ fun HandleSectionMoviesState(
 }
 
 fun LazyListScope.handlePopularMoviesState(
-    popularMoviesState: Resource<List<Moov>>,
+    popularMoviesState: Resource<List<Movie>>,
     navController: NavController
 ) {
     when (popularMoviesState) {
@@ -128,7 +128,7 @@ fun LazyListScope.handlePopularMoviesState(
             val movies = popularMoviesState.data
 
             items(movies.size) { index ->
-                PopularListItem(movie = movies[index], navController = navController)
+                MovieListItem(movie = movies[index], navController = navController)
             }
 
         }
