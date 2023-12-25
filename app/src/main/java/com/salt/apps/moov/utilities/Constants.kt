@@ -1,7 +1,6 @@
 package com.salt.apps.moov.utilities
 
 object Constants {
-    // Network
     const val BASE_URL = "https://api.themoviedb.org/3/"
     const val BASE_URL_IMAGE = "https://image.tmdb.org/t/p/original"
     private const val API_KEY =
@@ -17,8 +16,6 @@ object Constants {
         return BASE_URL_IMAGE + path
     }
 
-    // Database
     const val DB_NAME = "Moov.db"
-    const val DB_VERSION = 1
-    const val ENCRYPTED_DB_PASSPHRASE = "moov"
+    const val DB_VERSION = 2
 }
