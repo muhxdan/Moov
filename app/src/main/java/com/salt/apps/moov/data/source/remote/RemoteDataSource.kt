@@ -1,7 +1,7 @@
 package com.salt.apps.moov.data.source.remote
 
-import com.salt.apps.moov.data.source.remote.network.MoovApiResponse
-import com.salt.apps.moov.data.source.remote.network.MoovApiService
+import com.salt.apps.moov.data.source.remote.network.MovieApiResponse
+import com.salt.apps.moov.data.source.remote.network.MovieApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -10,27 +10,27 @@ import javax.inject.Singleton
 
 @Singleton
 class RemoteDataSource @Inject constructor(
-    private val moovApiService: MoovApiService
+    private val movieApiService: MovieApiService
 ) {
     suspend fun getPopularMovies() = flow {
         try {
-            val response = moovApiService.getPopularMovies()
+            val response = movieApiService.getPopularMovies()
             val data = response.results
-            if (data.isNotEmpty()) emit(MoovApiResponse.Success(data))
-            else emit(MoovApiResponse.Empty)
+            if (data.isNotEmpty()) emit(MovieApiResponse.Success(data))
+            else emit(MovieApiResponse.Empty)
         } catch (e: Exception) {
-            emit(MoovApiResponse.Error(e.message.toString()))
+            emit(MovieApiResponse.Error(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getUpComingMovies() = flow {
+    suspend fun getUpcomingMovies() = flow {
         try {
-            val response = moovApiService.getUpcomingMovies()
+            val response = movieApiService.getUpcomingMovies()
             val data = response.results
-            if (data.isNotEmpty()) emit(MoovApiResponse.Success(data))
-            else (emit(MoovApiResponse.Empty))
+            if (data.isNotEmpty()) emit(MovieApiResponse.Success(data))
+            else (emit(MovieApiResponse.Empty))
         } catch (e: Exception) {
-            emit(MoovApiResponse.Error(e.message.toString()))
+            emit(MovieApiResponse.Error(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)
 }

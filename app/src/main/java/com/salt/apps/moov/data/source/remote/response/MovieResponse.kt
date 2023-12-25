@@ -2,15 +2,15 @@ package com.salt.apps.moov.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class MoovResponse(
+data class MovieResponse(
     @field:SerializedName("page")
     val page: Int,
 
     @field:SerializedName("results")
-    val results: List<MoovItem>
+    val results: List<MovieItem>
 )
 
-data class MoovItem(
+data class MovieItem(
     @field:SerializedName("id")
     val id: Int,
 
