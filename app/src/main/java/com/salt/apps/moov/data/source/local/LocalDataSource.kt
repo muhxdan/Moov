@@ -1,23 +1,22 @@
 package com.salt.apps.moov.data.source.local
 
-import com.salt.apps.moov.data.source.local.entity.MoovEntity
-import com.salt.apps.moov.data.source.local.room.MoovDao
+import com.salt.apps.moov.data.source.local.entity.MovieEntity
+import com.salt.apps.moov.data.source.local.room.MovieDao
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class LocalDataSource @Inject constructor(
-    private val moovDao: MoovDao
+    private val movieDao: MovieDao
 ) {
-    suspend fun insertMoovs(moovs: List<MoovEntity>) = moovDao.insertAllMoov(moovs)
+    suspend fun insertMovies(movies: List<MovieEntity>) = movieDao.insertMovies(movies)
 
-//    suspend fun insertMovie(moovs: MovieEntity) = movieDao.insertMovie(moovs)
+    fun getMovies(type: String) = movieDao.getMovies(type)
 
-    fun getMoovs(type: String) = moovDao.getAllMoov(type)
+    fun getFavoriteMovies() = movieDao.getFavoriteMovies()
 
-//    fun getFavoriteMoovs() = moovDao.getFavoriteMoov()
+    fun getMovieById(moovId: Int) = movieDao.getMovieById(moovId)
 
-//    fun isFavoriteMoov(movieId: Int) = moovDao.isFavoriteMovie(movieId)
-
-//    suspend fun updateMoov(movieId: Int, isFavorite: Boolean) = moovDao.updateMoovById(movieId, isFavorite)
+    suspend fun updateMovieById(movieId: Int, isFavorite: Boolean) =
+        movieDao.updateMovieById(movieId, isFavorite)
 }
