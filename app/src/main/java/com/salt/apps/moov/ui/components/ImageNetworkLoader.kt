@@ -26,6 +26,7 @@ fun ImageNetworkLoader(
     imageUrl: String,
     voteAverage: Float,
     modifier: Modifier = Modifier,
+    showVoteAverage: Boolean = true,
 ) {
     Box {
         SubcomposeAsyncImage(
@@ -74,8 +75,10 @@ fun ImageNetworkLoader(
             }
         }
 
-        Box(modifier = Modifier.padding(10.dp)) {
-            CircularVote(percentage = voteAverage)
+        if (showVoteAverage) {
+            Box(modifier = Modifier.padding(10.dp)) {
+                CircularVote(percentage = voteAverage)
+            }
         }
     }
 

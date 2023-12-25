@@ -1,4 +1,4 @@
-package com.salt.apps.moov.ui.components.popular
+package com.salt.apps.moov.ui.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -25,14 +25,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.salt.apps.moov.data.model.Moov
-import com.salt.apps.moov.ui.components.ImageNetworkLoader
+import com.salt.apps.moov.data.model.Movie
 import com.salt.apps.moov.ui.navigation.MoovScreen.DETAIL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PopularListItem(
-    movie: Moov,
+fun MovieListItem(
+    movie: Movie,
     navController: NavController
 ) {
     Column {
@@ -69,8 +68,6 @@ fun PopularListItem(
                             .width(130.dp)
                             .height(150.dp)
                     )
-
-
                 }
                 Column(
                     modifier = Modifier
